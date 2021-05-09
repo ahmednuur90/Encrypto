@@ -2,8 +2,8 @@ from Encryp_Decryp import Encryp_Decryp
 
 
 def main():
-    encrypt = Encryp_Decryp()
-    encrypt.menu()
+    encrypto = Encryp_Decryp()
+    encrypto.menu()
 
 
 if __name__ == '__main__':
