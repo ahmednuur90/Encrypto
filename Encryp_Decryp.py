@@ -1,4 +1,5 @@
 from cryptography.fernet import Fernet, InvalidToken
+import os
 
 
 class Encryp_Decryp:
@@ -24,22 +25,32 @@ class Encryp_Decryp:
 
     def encrypto(self):
 
-        key = Fernet.generate_key()  # generates key to encrypt and saves to current directory
-        key_file = open('key.key', 'wb')
-        key_file.write(key)
-        key_file.close()
+        print("-------------------------------------------------------------------")
+        print("|             Please pick how you would like to encrypt           |")
+        print("|             1.         Generate a new key                       |")
+        print("|             2.         Use a username and password              |")
+        print("-------------------------------------------------------------------")
+        choice = int(input())
 
-        # getting input file to encrypt
-        input_file = input("Please enter the file you'd like to encrypt: ")
+        if choice == 1:
+            key = Fernet.generate_key()  # generates key to encrypt and saves to current directory
+            key_file = open('key.key', 'wb')
+            key_file.write(key)
+            key_file.close()
 
-        with open(input_file, 'rb') as file:
-            file_info = file.read()
+            # getting input file to encrypt
+            input_file = input("Please enter the file you'd like to encrypt: ")
 
-        key = Fernet(key)
-        encrypted_file = key.encrypt(file_info)
+            with open(input_file, 'rb') as file:
+                file_info = file.read()
 
-        with open(input_file, 'wb') as file:
-            file.write(encrypted_file)
+            key = Fernet(key)
+            encrypted_file = key.encrypt(file_info)
+
+            with open(input_file, 'wb') as file:
+                file.write(encrypted_file)
+
+            print("Your new key has been generated. It's been saved to ", os.getcwd(), "as key.key.")
 
     def decrypto(self):
         key_file = open('key.key', 'rb')       # reading the key that was used to encrypt
@@ -62,4 +73,4 @@ class Encryp_Decryp:
 
         except InvalidToken as e:
 
-            print("Sorry, it looks like the key is invalid, please try again!")
+            print("Sorry, it looks like the key is invalid. Please try again!")
