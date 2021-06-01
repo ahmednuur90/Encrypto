@@ -1,72 +1,156 @@
 from cryptography.fernet import Fernet, InvalidToken
 import os
+import sqlite3
+import time
 
 
 class Encryp_Decryp:
-    def __init__(self):
-        pass
 
-    def menu(self):
+    def __init__(self):
+        with sqlite3.connect("Users.db") as db:
+            cursor = db.cursor()
+
+        cursor.execute('''
+        CREATE TABLE IF NOT EXISTS user(        
+        username VARCHAR(20) NOT NULL ,
+        password VARCHAR(20) NOT NULL,   
+        user_key VARCHAR(100) NOT NULL);
+
+        ''')  # creates a database if there isn't already one existing
+
+    def user_menu(self):
+        print("-------------------------------------------------------------------")
+        print("|             Please Pick an Option Below                         |")
+        print("|             1.         Create New User                          |")
+        print("|             2.         Login                                    |")
+        print("-------------------------------------------------------------------")
+        num = int(input())
+
+        if num == 1:
+            self.new_user()
+        elif num == 2:
+            self.login()
+        else:
+            print("Invalid Input, please try again")
+            self.user_menu()
+
+    def encryp_menu(self, user_key):
         while 1:
             print("-------------------------------------------------------------------")
-            print("|             Please pick from the following options!             |")
-            print("|             1.         Encrypt a file                           |")
-            print("|             2.         Decrypt a file                           |")
-            print("|             3.         Exit Encrypto                            |")
+            print("|             Please Pick an Option Below                         |")
+            print("|             1.         Encrypt File                             |")
+            print("|             2.         Decrypt File                             |")
+            print("|             3.         Exit                                     |")
             print("-------------------------------------------------------------------")
             num = int(input())
-
             if num == 1:
-                self.encrypto()
+                self.encrypto(user_key)
             elif num == 2:
-                self.decrypto()
-            else:
+                self.decrypto(user_key)
+            elif num == 3:
+                print("Have a nice day :)")
+                time.sleep(1)
                 break
+            else:
+                print("Invalid Input, please try again")
+                self.user_menu()
 
-    def encrypto(self):
+    def new_user(self):
+        found = 0
+        while found == 0:
+            username = input("Please enter a username: ")
+            with sqlite3.connect("Users.db") as db:
+                cursor = db.cursor()
+            findUser = ("SELECT * FROM user WHERE username = ?")
+            cursor.execute(findUser, [(username)])
 
-        print("-------------------------------------------------------------------")
-        print("|             Please pick how you would like to encrypt           |")
-        print("|             1.         Generate a new key                       |")
-        print("|             2.         Use a username and password              |")
-        print("-------------------------------------------------------------------")
-        choice = int(input())
+            if cursor.fetchall():
+                print("Username has already been taken, please try again")
+            else:
+                found = 1
 
-        if choice == 1:
-            key = Fernet.generate_key()  # generates key to encrypt and saves to current directory
-            key_file = open('key.key', 'wb')
-            key_file.write(key)
-            key_file.close()
+        user_key = Fernet.generate_key()
+        user_key = user_key.decode()
+        password = input("Enter password: ")
+        password1 = input("Please enter password again: ")
 
-            # getting input file to encrypt
-            input_file = input("Please enter the file you'd like to encrypt: ")
+        while password != password1:
+            print("Your passwords don't match sorry, please try again ")
+            password = input("Enter password: ")
+            password1 = input("Please enter password again ")
 
-            with open(input_file, 'rb') as file:
-                file_info = file.read()
+        insertData = '''INSERT INTO user(username, password, user_key)
+            VALUES (?,?,?)'''
+        cursor.execute(insertData, [(username), (password), (user_key)])
+        db.commit()
 
-            key = Fernet(key)
-            encrypted_file = key.encrypt(file_info)
+        self.encryp_menu(user_key)
 
-            with open(input_file, 'wb') as file:
-                file.write(encrypted_file)
+    def login(self):
+        username = input("Please enter username ")
+        password = input("Please enter your password ")
+        with sqlite3.connect("Users.db") as db:
+            cursor = db.cursor()
+        find_user = ("SELECT * FROM user WHERE username = ? AND password = ?")
 
-            print("Your new key has been generated. It's been saved to ", os.getcwd(), "as key.key.")
+        cursor.execute(find_user, [(username), (password)])
+        results = cursor.fetchone()
 
-    def decrypto(self):
-        key_file = open('key.key', 'rb')       # reading the key that was used to encrypt
-        key = key_file.read()
-        key_file.close()
+        user_key = self.get_key(username, password)
 
-        input_file = input("Please enter the file you'd like to decrypt: ")
+        if results:
+            print("Login Successful")
+            self.encryp_menu(user_key)
+
+        else:
+            print("Username and password not recognized")
+            again = input("Do you want to try again? Y or N -> ")
+            if again.lower() == "n":
+                print("Goodbye")  # change this to the encrypting and decrypting of files, with the parameter of the key
+                time.sleep(1)
+                exit(0)
+            elif again.lower() == "y":
+                self.login()
+
+    def get_key(self, username, password):
+        with sqlite3.connect("Users.db") as db:
+            cursor = db.cursor()
+
+        find_key = ('''SELECT user_key
+                       FROM user
+                       WHERE username == (?) AND password == (?) 
+        ''')
+
+        cursor.execute(find_key, (username, password))
+        user_key = cursor.fetchone()
+        return user_key[0]
+
+    def encrypto(self, user_key):
+        # getting input file to encrypt
+        input_file = input("Please enter the file you'd like to encrypt: ")
 
         with open(input_file, 'rb') as file:
             file_info = file.read()
 
-        key = Fernet(key)
+        user_key = Fernet(user_key)
+        encrypted_file = user_key.encrypt(file_info)
+
+        with open(input_file, 'wb') as file:
+            file.write(encrypted_file)
+
+        print("File successfully encrypted!")
+
+    def decrypto(self, user_key):
+        input_file = input("Please enter the file you'd like to decrypt: ")
+
+        user_key = Fernet(user_key)
+
+        with open(input_file, 'rb') as file:
+            file_info = file.read()
 
         try:
 
-            decrypted_file = key.decrypt(file_info)
+            decrypted_file = user_key.decrypt(file_info)
 
             with open(input_file, 'wb') as file:
                 file.write(decrypted_file)
@@ -74,3 +158,5 @@ class Encryp_Decryp:
         except InvalidToken as e:
 
             print("Sorry, it looks like the key is invalid. Please try again!")
+
+        print("File successfully decrypted!")
