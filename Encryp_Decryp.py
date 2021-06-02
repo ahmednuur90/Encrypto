@@ -91,22 +91,22 @@ class Encryp_Decryp:
         password = input("Please enter your password ")
         with sqlite3.connect("Users.db") as db:
             cursor = db.cursor()
+
         find_user = ("SELECT * FROM user WHERE username = ? AND password = ?")
 
         cursor.execute(find_user, [(username), (password)])
         results = cursor.fetchone()
 
-        user_key = self.get_key(username, password)
-
         if results:
             print("Login Successful")
+            user_key = self.get_key(username, password)
             self.encryp_menu(user_key)
 
         else:
-            print("Username and password not recognized")
+            print("Username or password not recognized")
             again = input("Do you want to try again? Y or N -> ")
             if again.lower() == "n":
-                print("Goodbye")  # change this to the encrypting and decrypting of files, with the parameter of the key
+                print("Have a nice day :)")
                 time.sleep(1)
                 exit(0)
             elif again.lower() == "y":
