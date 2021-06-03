@@ -1,7 +1,7 @@
-from cryptography.fernet import Fernet, InvalidToken
-import os
-import sqlite3
 import time
+
+from cryptography.fernet import Fernet, InvalidToken
+import sqlite3
 
 
 class Encryp_Decryp:
@@ -103,7 +103,7 @@ class Encryp_Decryp:
             self.encryp_menu(user_key)
 
         else:
-            print("Username or password not recognized")
+            print("Username or password not recognized. This can happen if you're a new user.")
             again = input("Do you want to try again? Y or N -> ")
             if again.lower() == "n":
                 print("Have a nice day :)")
@@ -129,16 +129,20 @@ class Encryp_Decryp:
         # getting input file to encrypt
         input_file = input("Please enter the file you'd like to encrypt: ")
 
-        with open(input_file, 'rb') as file:
-            file_info = file.read()
+        try:
+            with open(input_file, 'rb') as file:
+                file_info = file.read()
 
-        user_key = Fernet(user_key)
-        encrypted_file = user_key.encrypt(file_info)
+            user_key = Fernet(user_key)
+            encrypted_file = user_key.encrypt(file_info)
 
-        with open(input_file, 'wb') as file:
-            file.write(encrypted_file)
+            with open(input_file, 'wb') as file:
+                file.write(encrypted_file)
 
-        print("File successfully encrypted!")
+            print("File successfully encrypted!")
+
+        except IOError:
+            print("Sorry, looks like that file doesn't exist, please try again")
 
     def decrypto(self, user_key):
         input_file = input("Please enter the file you'd like to decrypt: ")
@@ -157,6 +161,7 @@ class Encryp_Decryp:
 
         except InvalidToken as e:
 
-            print("Sorry, it looks like the key is invalid. Please try again!")
+            print("Sorry, it looks like the key is invalid. Please select another User")
+            self.user_menu()
 
         print("File successfully decrypted!")
