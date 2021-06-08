@@ -148,9 +148,13 @@ class Encryp_Decryp:
         input_file = input("Please enter the file you'd like to decrypt: ")
 
         user_key = Fernet(user_key)
+        try:
+            with open(input_file, 'rb') as file:
+                file_info = file.read()
 
-        with open(input_file, 'rb') as file:
-            file_info = file.read()
+        except IOError:
+            print("Sorry, looks like that file doesn't exist, please try again")
+            self.encryp_menu()
 
         try:
 
