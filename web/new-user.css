@@ -17,7 +17,10 @@ body {
 
 .box {
   width: 300px;
-  padding: 100px;
+  padding-top: 100px;
+  padding-left: 100px;
+  padding-right: 100px;
+  padding-bottom: 85px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -50,18 +53,12 @@ body {
   transition: 0.25s;
 }
 
-.box input[type="text"]:focus,
-.box input[type="password"]:focus {
-  width: 280px;
-  border-color: #2ecc71;
-}
-
-.box input[type="submit"] {
+.box button {
   border: 0;
   background: none;
   display: block;
   margin: 20px auto;
-  text-align: center;
+  /*text-align: center;*/
   border: 2px solid #2ecc71;
   padding: 14px 40px;
   outline: none;
@@ -71,6 +68,13 @@ body {
   cursor: pointer;
 }
 
-.box input[type="submit"]:hover {
+.box button:hover {
   background: #2ecc71;
 }
+
+.box input[type="text"]:focus,
+.box input[type="password"]:focus {
+  width: 280px;
+  border-color: #2ecc71;
+}
+

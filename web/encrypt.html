@@ -6,15 +6,33 @@
     <link rel="stylesheet" href="./encrypt.css">
     <title>Encrypto</title>
 </head>
-
+<video autoplay muted loop id="video">
+    <source src="video.mp4" type="video/mp4">
+</video>
 <body>
     <form class="box" action="encrypt.html" method="post">
         <h1>Encrypt A File</h1>
         <br>
         <label class="file-upload">
-            <input type="file" size="60px" name="" value="Find a File"> Enter a file
+            <input type="file" size="60px" name="" value="Find a File0" id="inputFile" hidden="hidden">
+            Enter a file
         </label>
+        <span id="file-chosen" style="color: white;">No file chosen yet..</span>
         <input type="submit" name="" value="Encrypt!">
     </form>
+
+    <script type="text/javascript">
+        const realFile = document.getElementById('inputFile');
+        const fileChosen = document.getElementById('file-chosen');
+
+        realFile.addEventListener("change", function(){
+            if(realFile.value){
+                fileChosen.innerHTML = realFile.value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1];
+            }
+            else{
+                fileChosen.innerHTML = "No file chosen yet..."
+            }
+        });
+    </script>
 </body>
 </html>

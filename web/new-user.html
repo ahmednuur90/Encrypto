@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./new-user.css">
     <title>Encrypto</title>
+    <script src="sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="sweetalert.css">
 </head>
 <video autoplay muted loop id="video">
     <source src="video.mp4" type="video/mp4">
@@ -13,9 +15,31 @@
     <form class="box" action="new-user.html" method="post">
         <h1>New User</h1>
         <input type="text" name="" placeholder="Username">
-        <input type="password" name="" placeholder="Password">
-        <input type="password" name="" placeholder="Repeat Password">
-        <input type="submit" name="" value="Sign-Up">
+        <input id="pass1" type="password" name="" placeholder="Password">
+        <input id="pass2" type="password" name="" placeholder="Repeat Password">
+        <button id="sign-up" type="button">Sign-Up</button>
+        <br>
+        <button id="back-button" onclick="location.href='home.html'" type="button" style="position: absolute; left: 15px">←</button>
     </form>
+    <script type="text/javascript">
+            var btn = document.getElementById('sign-up');
+            btn.addEventListener('click', passMatch);
+            async function passMatch(){
+                var pass1 = document.getElementById("pass1").value;
+                var pass2 = document.getElementById("pass2").value;
+                if(pass1 === pass2){
+                    swal({
+                        title: "New User Created!",
+                        text: "Have Fun Encrypting!",
+                        type: "success"
+                        },
+                        function(){
+                            window.location.href = 'select.html';
+                    });}
+                else{
+                    sweetAlert("Error", "Passwords don't match!", "error");
+                }
+            }
+        </script>
 </body>
 </html>
