@@ -18,6 +18,7 @@ body {
 .box {
   width: 600px;
   padding: 40px;
+  padding-bottom: 80px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -33,12 +34,12 @@ body {
   font-weight: 500;
 }
 
-.box input[type="submit"] {
+.box button {
   border: 0;
   background: none;
   display: block;
   margin: 20px auto;
-  text-align: center;
+  /*text-align: center;*/
   border: 2px solid #2ecc71;
   padding: 14px 40px;
   outline: none;
@@ -48,6 +49,7 @@ body {
   cursor: pointer;
 }
 
-.box input[type="submit"]:hover {
+
+.box button:hover {
   background: #2ecc71;
 }

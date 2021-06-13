@@ -12,36 +12,13 @@ body {
   margin: 0;
   padding: 0;
   font-family: sans-serif;
-  background: #34495e;
-}
-
-.box input[type="file"] {
-  display: none;
-}
-
-.file-upload {
-  width: 100px;
-  border: 0;
-  background: none;
-  display: block;
-  margin: 20px auto;
-  text-align: center;
-  border: 2px solid #2ecc71;
-  padding: 14px 40px;
-  outline: none;
-  color: white;
-  border-radius: 24px;
-  transition: 0.25s;
-  cursor: pointer;
-}
-
-.box label {
-  color: white;
+  background: black;
 }
 
 .box {
   width: 600px;
   padding: 40px;
+  padding-bottom: 80px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -57,12 +34,26 @@ body {
   font-weight: 500;
 }
 
-.box input[type="submit"] {
+.box input[type = "text"]{
   border: 0;
   background: none;
   display: block;
   margin: 20px auto;
   text-align: center;
+  border: 2px solid #3498db;
+  padding: 14px 40px;
+  width: 300px;
+  outline: none;
+  color: white;
+  border-radius: 24px;
+  transition: 0.25s;
+}
+
+.box button {
+  border: 0;
+  background: none;
+  display: block;
+  margin: 20px auto;
   border: 2px solid #2ecc71;
   padding: 14px 40px;
   outline: none;
@@ -72,10 +63,11 @@ body {
   cursor: pointer;
 }
 
-.box input[type="submit"]:hover {
+.box button:hover {
   background: #2ecc71;
 }
 
-.box label:hover {
-  background: #2ecc71;
+.box input[type="text"]:focus{
+  width: 500px;
+  border-color: #2ecc71;
 }

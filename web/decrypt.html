@@ -5,18 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./decrypt.css">
     <title>Encrypto</title>
+    <script src="sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="sweetalert.css">
+    <script type="text/javascript" src="eel.js"></script>
 </head>
 <video autoplay muted loop id="video">
     <source src="video.mp4" type="video/mp4">
 </video>
 <body>
-    <form class="box" action="decrypt.html" method="post">
-        <h1>Decrypt A File</h1>
+    <form class="box" action="encrypt.html" method="POST">
+        <h1>Encrypt A File</h1>
         <br>
-        <label class="file-upload">
-            <input type="file" size="60px" name="" value="Find a File"> Enter a file
-        </label>
-        <input type="submit" name="" value="Decrypt!">
+        <input id="file-path" type="text" name="" placeholder="Enter file with absolute path"/>
+        <button id="decrypt-button" type="button">Decrypt</button>
+        <br>
+        <button id="back-button" onclick="location.href='select.html'" type="button" style="position: absolute; left: 15px">←</button>
     </form>
+
+    <script type="text/javascript">
+        const btn = document.getElementById('decrypt-button');
+        btn.addEventListener('click', decrypting);
+        async function decrypting(){
+            const username = localStorage.getItem('USERNAME');
+            const password = localStorage.getItem('PASSWORD');
+            const file = document.getElementById('file-path').value;
+            let key = await eel.get_key(username, password)();
+            let decrypt = await eel.decrypto(file, key)();
+
+            if(decrypt === true){
+                swal({
+                        title: "Decrypted File!!",
+                        text: "Congrats " + username + "!",
+                        type: "success"
+                        });
+            }
+            else{
+                sweetAlert("Error", "Sorry, couldn't decrypt", "error");
+            }
+        }
+    </script>
 </body>
 </html>

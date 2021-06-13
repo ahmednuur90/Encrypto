@@ -5,34 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./encrypt.css">
     <title>Encrypto</title>
+    <script src="sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="sweetalert.css">
+    <script type="text/javascript" src="eel.js"></script>
 </head>
 <video autoplay muted loop id="video">
     <source src="video.mp4" type="video/mp4">
 </video>
 <body>
-    <form class="box" action="encrypt.html" method="post">
+    <form class="box" action="encrypt.html" method="POST">
         <h1>Encrypt A File</h1>
         <br>
-        <label class="file-upload">
-            <input type="file" size="60px" name="" value="Find a File0" id="inputFile" hidden="hidden">
-            Enter a file
-        </label>
-        <span id="file-chosen" style="color: white;">No file chosen yet..</span>
-        <input type="submit" name="" value="Encrypt!">
+        <input id="file-path" type="text" name="" placeholder="Enter file with absolute path"/>
+        <button id="encrypt-button" type="button">Encrypt</button>
+        <br>
+        <button id="back-button" onclick="location.href='select.html'" type="button" style="position: absolute; left: 15px">←</button>
     </form>
 
     <script type="text/javascript">
-        const realFile = document.getElementById('inputFile');
-        const fileChosen = document.getElementById('file-chosen');
+        const btn = document.getElementById('encrypt-button');
+        btn.addEventListener('click', encrypting);
+        async function encrypting(){
+            const username = localStorage.getItem('USERNAME');
+            const password = localStorage.getItem('PASSWORD');
+            const file = document.getElementById('file-path').value;
+            let key = await eel.get_key(username, password)();
+            let encrypt = await eel.encrypto(file, key)();
 
-        realFile.addEventListener("change", function(){
-            if(realFile.value){
-                fileChosen.innerHTML = realFile.value.match(/[\/\\]([\w\d\s\.\-\(\)]+)$/)[1];
+            if(encrypt === true){
+                swal({
+                        title: "Encrypted File!!",
+                        text: "Congrats " + username + "!",
+                        type: "success"
+                        });
             }
             else{
-                fileChosen.innerHTML = "No file chosen yet..."
+                sweetAlert("Error", "Sorry, couldn't encrypt", "error");
             }
-        });
+        }
     </script>
 </body>
 </html>

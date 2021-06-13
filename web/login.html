@@ -5,18 +5,56 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./login.css">
     <title>Login Page</title>
+    <script src="sweetalert.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="sweetalert.css">
+    <script type="text/javascript" src="eel.js"></script>
 </head>
 <video autoplay muted loop id="video">
     <source src="video.mp4" type="video/mp4">
 </video>
 <body>
+
     <form class="box" action="login.html" method="post">
         <h1>Login</h1>
-        <input type="text" name="" placeholder="Username">
-        <input type="password" name="" placeholder="Password">
-        <button id="login" type="button">Login</button>
+        <input id="username" type="text" name="" placeholder="Username">
+        <input id="password" type="password" name="" placeholder="Password">
+        <button id="loginBtn" type="button">Login</button>
         <br>
         <button id="back-button" onclick="location.href='home.html'" type="button" style="position: absolute; left: 15px">←</button>
     </form>
+    <script type="text/javascript">
+        eel.new_db()();
+        const btn = document.getElementById("loginBtn");
+        btn.addEventListener('click', loginID);
+
+        async function loginID(){
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+            let n = await eel.login(username, password)();
+
+            if(n === true){
+                storeInfo();
+                swal({
+                        title: "Login Successful!",
+                        text: "Have Fun Encrypting!",
+                        type: "success"
+                        },
+                        function(){
+                            window.location.href = 'select.html';
+                    });
+            }
+            else{
+                sweetAlert("Error", "User Doesn't Exist", "error");
+            }
+        }
+
+        function storeInfo(){
+            const name = document.getElementById('username').value;
+            const pass = document.getElementById('password').value;
+
+            localStorage.setItem("USERNAME", name);
+            localStorage.setItem("PASSWORD", pass);
+        }
+    </script>
 </body>
 </html>
