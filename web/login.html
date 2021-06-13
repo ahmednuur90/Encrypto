@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./login.css">
     <title>Login Page</title>
-    <script src="sweetalert.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="sweetalert.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript" src="eel.js"></script>
 </head>
 <video autoplay muted loop id="video">
@@ -35,16 +34,14 @@
             if(n === true){
                 storeInfo();
                 swal({
-                        title: "Login Successful!",
-                        text: "Have Fun Encrypting!",
-                        type: "success"
-                        },
-                        function(){
-                            window.location.href = 'select.html';
-                    });
-            }
+                    title: "Login Successful!",
+                    text: "Have Fun Encrypting!",
+                    icon: "success"
+                }).then(function () {
+                    window.location.href = 'select.html';
+                    });}
             else{
-                sweetAlert("Error", "User Doesn't Exist", "error");
+                swal("Error", "User Doesn't Exist", "error");
             }
         }
 

@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./new-user.css">
     <title>Encrypto</title>
-    <script src="sweetalert.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="sweetalert.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript" src="eel.js"></script>
 </head>
 <video autoplay muted loop id="video">
@@ -34,7 +33,7 @@
             if(pass1 === pass2 && pass1 !== ""){
                 let user = await eel.username_exists(username)();
                 if(user === true){
-                sweetAlert("Error", "Username Already Exists!", "error");
+                swal("Error", "Username Already Exists!", "error");
                 }
                 else{
                     eel.new_user(username, pass1)();
@@ -42,13 +41,12 @@
                     swal({
                         title: "New User Created!",
                         text: "Have Fun Encrypting!",
-                        type: "success"
-                        },
-                        function(){
+                        icon: "success"
+                        }).then(function () {
                           window.location.href = 'select.html';
                     })}}
             else{
-                sweetAlert("Error", "Passwords don't match!", "error");
+                swal("Error", "Passwords don't match!", "error");
             }
         }
 

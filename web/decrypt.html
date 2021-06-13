@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./decrypt.css">
     <title>Encrypto</title>
-    <script src="sweetalert.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="sweetalert.css">
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
     <script type="text/javascript" src="eel.js"></script>
 </head>
 <video autoplay muted loop id="video">
@@ -36,11 +35,11 @@
                 swal({
                         title: "Decrypted File!!",
                         text: "Congrats " + username + "!",
-                        type: "success"
+                        icon: "success"
                         });
             }
             else{
-                sweetAlert("Error", "Sorry, couldn't decrypt", "error");
+                swal("Error", "Sorry, couldn't decrypt", "error");
             }
         }
     </script>
