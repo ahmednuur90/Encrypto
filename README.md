@@ -6,7 +6,7 @@
 </p>
 
 <p align="center">
-  [Imgur](https://i.imgur.com/qiWzeHp.png)
+  <<a href="https://imgur.com/qiWzeHp"><img src="https://i.imgur.com/qiWzeHp.png" title="source: imgur.com" /></a>
   <br>
   <br>
   <img width="800" src="https://imgur.com/qiWzeHp">
