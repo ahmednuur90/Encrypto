@@ -6,14 +6,14 @@
 </p>
 
 <p align="center">
-  <<a href="https://imgur.com/qiWzeHp"><img src="https://i.imgur.com/qiWzeHp.png" title="source: imgur.com" /></a>
+  <a href="https://imgur.com/DvMoUBg"><img src="https://i.imgur.com/DvMoUBg.png" title="source: imgur.com" /></a>
   <br>
   <br>
-  <img width="800" src="https://imgur.com/qiWzeHp">
+  <a href="https://imgur.com/qiWzeHp"><img src="https://i.imgur.com/qiWzeHp.png" title="source: imgur.com" /></a>
   <br>
   <br>
-  <img width="800" src="https://imgur.com/Zjnu4ST">
+  <a href="https://imgur.com/Zjnu4ST"><img src="https://i.imgur.com/Zjnu4ST.png" title="source: imgur.com" /></a>
   <br>
   <br>
-  <img width="800" src="https://imgur.com/fIPimG7">
+  <a href="https://imgur.com/fIPimG7"><img src="https://i.imgur.com/fIPimG7.png" title="source: imgur.com" /></a>
 </p>
