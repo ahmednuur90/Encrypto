@@ -1,6 +1,7 @@
 import eel
 from cryptography.fernet import Fernet, InvalidToken
 import sqlite3
+import hashlib
 
 
 eel.init("web")
@@ -14,7 +15,7 @@ def new_db():
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS user(        
     username VARCHAR(20) NOT NULL ,
-    password VARCHAR(20) NOT NULL,   
+    hashcode VARCHAR(20) NOT NULL,   
     user_key VARCHAR(100) NOT NULL);
 
     ''')  # creates a database if there isn't already one existing
@@ -37,11 +38,15 @@ def new_user(username, password):
     user_key = Fernet.generate_key()
     user_key = user_key.decode()
 
+    hashingPass = hashlib.sha256(password.encode('utf-8'))
+    hashcode = hashingPass.hexdigest()
+
+
     with sqlite3.connect("Users.db") as db:
         cursor = db.cursor()
-    insertData = '''INSERT INTO user(username, password, user_key)
+    insertData = '''INSERT INTO user(username, hashcode, user_key)
         VALUES (?,?,?)'''
-    cursor.execute(insertData, [(username), (password), (user_key)])
+    cursor.execute(insertData, [(username), (hashcode), (user_key)])
     db.commit()
 
 @eel.expose
@@ -49,9 +54,12 @@ def login(username, password):
     with sqlite3.connect("Users.db") as db:
         cursor = db.cursor()
 
-    find_user = ("SELECT * FROM user WHERE username = ? AND password = ?")
+    hashingPass = hashlib.sha256(password.encode('utf-8'))
+    hashcode = hashingPass.hexdigest()
 
-    cursor.execute(find_user, [(username), (password)])
+    find_user = ("SELECT * FROM user WHERE username = ? AND hashcode = ?")
+
+    cursor.execute(find_user, [(username), (hashcode)])
     results = cursor.fetchone()
 
     if results:
@@ -66,12 +74,15 @@ def get_key(username, password):
     with sqlite3.connect("Users.db") as db:
         cursor = db.cursor()
 
+    hashingPass = hashlib.sha256(password.encode('utf-8'))
+    hashcode = hashingPass.hexdigest()
+
     find_key = ('''SELECT user_key
                    FROM user
-                   WHERE username == (?) AND password == (?) 
+                   WHERE username == (?) AND hashcode == (?) 
     ''')
 
-    cursor.execute(find_key, (username, password))
+    cursor.execute(find_key, (username, hashcode))
     user_key = cursor.fetchone()
     return user_key[0]
 
